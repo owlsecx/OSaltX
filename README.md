@@ -18,21 +18,18 @@
 
 ## 📌 Overview
 
-SaltStack master / minion / salt-api / pillar / state / PKI configuration-hardening auditor
+OSaltX is an offline, read-only configuration-hardening auditor for SaltStack. It parses salt-master, salt-minion, salt-api, pillar and state files to flag insecure key acceptance, weak eAuth/ACL settings, plaintext secrets and known CVEs. Secrets are masked and findings map to CWE and MITRE.
 
 ---
 
 ## ✨ Features
 
-- Stdlib YAML-subset parser (maps, lists, flow, block scalars, renderer shebangs); Jinja lines skipped & flagged
-- Master — auto_accept, autosign_file / grains, open_mode, publisher_acl / external_auth / client_acl wildcards, eauth pam broad groups, peer / peer_run, file_recv, pillar_opts, interface exposure, user root, gitfs / git_pillar transport, rotate_aes_key, reactor wildcards
-- Minion — master_finger, verify_master_pubkey_sign, open_mode, mine cmd.run, autosign_grains
-- salt-api — rest_cherrypy / rest_tornado TLS, webhook auth, netapi clients, token lifetime
-- Pillar plaintext secrets (gpg renderer aware, masked), State cmd.run Jinja injection, insecure sources, gpgcheck
-- PKI dir 0700 / key-file permission audit; transport TLS
-- Version check vs CVE-2020-11651 / 11652 and later CVEs
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- Self-test --demo, CI gates --fail-on / --min-severity
+- Stdlib YAML-subset parser that skips and flags Jinja lines
+- Master checks for auto_accept, open_mode, ACL/eauth wildcards, peer and gitfs settings
+- Minion checks for master fingerprint, key verification and autosign grains
+- salt-api TLS, webhook auth and token-lifetime review
+- Pillar plaintext-secret detection (gpg-aware, masked) and state cmd.run injection checks
+- Version-based CVE check (CVE-2020-11651/11652 and later) with TXT/MD/JSON/CSV/SARIF export
 
 ---
 
@@ -46,7 +43,10 @@ SaltStack master / minion / salt-api / pillar / state / PKI configuration-harden
 ## 🚀 Usage
 
 ```bash
-./OSaltX
+./OSaltX --scan --root /mnt/collected
+./OSaltX --salt-version 3006.1 --sarif -o report.sarif
+./OSaltX -r / --fail-on high
+./OSaltX --help
 ```
 
 ---
